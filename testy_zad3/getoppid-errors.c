@@ -20,7 +20,10 @@ int main(void) {
     printf("Nic po tej linijce nie powinno się wypisać\n");
     for (int i = 0; i <= CHECKRANGE; i++) {
         pid_t res = getoppid(i);
-        if (res >= 30000 || res < 0) {
+        if (res == -1 && errno != EINVAL) {
+            printf("przyps, jakiś dziwny error: %s\n", strerror(errno));
+        }
+        if (res >= 30000) {
             printf("przyps, prawdopodobnie wypisujesz ppid nieistniejącego procesu:\n");
             printf("pid: %d oppid: %u\n\n", i, getoppid(i));
         }
